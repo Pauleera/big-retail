@@ -12,8 +12,10 @@ st.markdown("Conectado a AWS Athena – datos desde S3")
 @st.cache_data
 def run_query(query):
     conn = connect(
-        s3_staging_dir="s3://big-retail-analyzer-bucket/athena-results/",
-        region_name="us-east-2"  
+        aws_access_key_id=st.secrets["aws_access_key_id"],
+        aws_secret_access_key=st.secrets["aws_secret_access_key"],
+        s3_staging_dir=st.secrets["s3_staging_dir"],
+        region_name=st.secrets["aws_region"]
     )
     return pd.read_sql(query, conn)
 

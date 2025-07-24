@@ -17,7 +17,10 @@ def run_query(query):
         s3_staging_dir=st.secrets["s3_staging_dir"],
         region_name=st.secrets["aws_region"]
     )
-    return pd.read_sql(query, conn)
+    cursor = conn.cursor()
+    cursor.execute(query)
+    df = pd.DataFrame(cursor.fetchall(), columns=[col[0] for col in cursor.description])
+    return df
 
 # Consulta de ejemplo (ajústala a tu tabla real)
 query = """
